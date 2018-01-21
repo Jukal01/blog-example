@@ -34,13 +34,13 @@ class PostDetailView(DetailView):
 
 class CreatePostView(LoginRequiredMixin,CreateView):
     login_url = '/login/' # if this person is not logged in, where should this person go? To login_url
-    redirect_field_name = 'blog/post_detail.html'
+    redirect_field_name = 'post_detail.html'
     form_class = PostForm
     model = Post
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/login/' # if this person is not logged in, where should this person go? To login_url
-    redirect_field_name = 'blog/post_detail.html'
+    redirect_field_name = 'post_detail.html'
     form_class = PostForm
     model = Post
 
@@ -50,7 +50,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 class DraftListView(LoginRequiredMixin,ListView):
     login_url = '/login/'
-    redirect_field_name = 'blog/post_list.html'
+    redirect_field_name = 'post_list.html'
     model = Post
 
     def get_queryset(self):
