@@ -14,7 +14,7 @@ from django.views.generic import (TemplateView, ListView,
 ################################
 
 class AboutView(TemplateView):
-    template_name = 'about.html'
+    template_name = 'blog/about.html'
 
 class PostListView(ListView):
     #if no template name is said here. The default one is post_list.html. It is just
