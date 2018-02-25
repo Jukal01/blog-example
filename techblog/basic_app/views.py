@@ -14,7 +14,7 @@ from django.views.generic import (TemplateView, ListView,
 ################################
 
 class AboutView(TemplateView):
-    template_name = 'blog/about.html'
+    template_name = 'about.html'
 
 class PostListView(ListView):
     #if no template name is said here. The default one is post_list.html. It is just
@@ -34,13 +34,13 @@ class PostDetailView(DetailView):
 
 class CreatePostView(LoginRequiredMixin,CreateView):
     login_url = '/login/' # if this person is not logged in, where should this person go? To login_url
-    redirect_field_name = 'post_detail.html'
+    redirect_field_name = 'basic_app/post_detail.html'
     form_class = PostForm
     model = Post
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/login/' # if this person is not logged in, where should this person go? To login_url
-    redirect_field_name = 'post_detail.html'
+    redirect_field_name = 'basic_app/post_detail.html'
     form_class = PostForm
     model = Post
 
@@ -50,8 +50,10 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 class DraftListView(LoginRequiredMixin,ListView):
     login_url = '/login/'
-    redirect_field_name = 'post_list.html'
+    redirect_field_name = 'basic_app/post_list.html'
     model = Post
+    template_name = 'basic_app/draft_list.html'
+    context_object_name = 'draft_list'
 
     def get_queryset(self):
         return Post.objects.filter(published_date__isnull=True).order_by('created_date')
@@ -68,7 +70,7 @@ def post_publish(request,pk):
     post.publish()
     return redirect('post_detail', pk=pk)
 
-@login_required
+
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -94,8 +96,8 @@ def comment_approve(request,pk):
 def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     post_pk = comment.post.pk # Note that you must save this variable before
-                              # delete this comment. The reason is simple: if
-                              # when you delete it, you do not have the post pk
-                              # which the comment was referring to it
+                              # deleting this comment. The reason is simple: if
+                              # when you delete it, you do not have the pk of the 
+                              # post which the comment was referring to it
     comment.delete() # Delete the comment from my database
     return redirect('post_detail', pk=post_pk)
